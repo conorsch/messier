@@ -8,7 +8,7 @@ Vagrant.configure(2) do |config|
   # Shared VirtualBox settings for all hosts.
   config.vm.box = "ubuntu/trusty64"
   config.vm.box_check_update = false
-  config.vm.network "private_network", type: "dhcp", virtualbox__intnet: true
+  config.vm.network "private_network", type: "dhcp"
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.provider :virtualbox do |v|
     v.memory = 256
