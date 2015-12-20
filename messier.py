@@ -10,8 +10,12 @@ import vagrant
 
 v = vagrant.Vagrant()
 
-testing_vms = ['server', 'client']
 
-for vm in testing_vms:
-    v.up(vm_name=vm, no_provision=True)
+def create_vms():
+    available_vms = [vm for vm in v.status()]
+    for vm in available_vms:
+        v.up(vm_name=vm.name, no_provision=True)
 
+
+if __name__ == "__main__":
+    create_vms()
