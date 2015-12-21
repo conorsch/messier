@@ -2,6 +2,7 @@ require 'rake'
 require 'rspec/core/rake_task'
 require 'yaml'
 require 'ansible_spec'
+require 'tempfile'
 
 properties = AnsibleSpec.get_properties
 
