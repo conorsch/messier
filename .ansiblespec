@@ -1,4 +1,4 @@
 --- 
 - playbook: test/default.yml
-#  inventory: .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
-  inventory: vagrant-inventory.py
+  inventory: .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+#  inventory: vagrant-inventory.py
