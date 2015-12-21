@@ -11,10 +11,25 @@ import vagrant
 v = vagrant.Vagrant()
 
 
+
+def provision_vms():
+    available_vms = [vm for vm in v.status()]
+    for vm in available_vms:
+        v.provision(vm_name=vm.name, no_provision=True)
+
+
+def destroy_vms():
+    available_vms = [vm for vm in v.status()]
+    for vm in available_vms:
+        v.destroy(vm_name=vm.name, no_provision=True)
+
+
 def create_vms():
     available_vms = [vm for vm in v.status()]
     for vm in available_vms:
         v.up(vm_name=vm.name, no_provision=True)
+
+
 
 
 if __name__ == "__main__":
