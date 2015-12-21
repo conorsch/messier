@@ -26,6 +26,11 @@ Vagrant.configure(2) do |config|
     client.vm.provision :ansible do |ansible|
       ansible.playbook = "test/default.yml"
       ansible.limit = "all"
+      # ansible_spec expects groups, so we'll make redundant groups.
+      ansible.groups = {
+        "server" => "server",
+        "client" => "client",
+      }
     end
   end
   # config.vm.provision "shell", inline: <<-SHELL

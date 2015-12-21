@@ -29,6 +29,7 @@ from docopt import docopt
 # of `messier`.
 
 import vagrant
+import subprocess
 
 
 v = vagrant.Vagrant(quiet_stdout=False)
@@ -61,6 +62,10 @@ def create_vms(args):
         v.up(vm_name=vm.name, provider=args['--provider'], no_provision=True)
 
 
+def verify_vms(args):
+    subprocess.call(["bundle", "exec", "rake", "serverspec:default"])
+
+
 if __name__ == "__main__":
     args = docopt(__doc__, version='0.1')
     print(args)
@@ -73,9 +78,13 @@ if __name__ == "__main__":
     elif args['<command>'] == 'destroy':
         destroy_vms(args)
 
+    elif args['<command>'] == 'verify':
+        verify_vms(args)
+
     elif args['<command>'] == 'test':
         destroy_vms(args)
         create_vms(args)
         provision_vms(args)
         reload_vms(args)
+        verify_vms(args)
 

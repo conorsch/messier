@@ -1,5 +1,5 @@
 ---
-- name: Run testing playbook.
+- name: default
   hosts: server
   roles:
     - role: server-config
