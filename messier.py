@@ -55,6 +55,11 @@ def reload_vms(args):
 def destroy_vms(args):
     for vm in args['vms']:
         v.destroy(vm_name=vm.name)
+        # Destroy a second time because the vagrant-digitalocean plugin
+        # doesn't clean up after itself:
+        # https://github.com/smdahlen/vagrant-digitalocean/issues/194
+        if vm.provider == "digital_ocean":
+            v.destroy(vm_name=vm.name)
 
 
 def create_vms(args):
