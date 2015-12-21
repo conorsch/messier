@@ -23,6 +23,10 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "client" do |client|
     client.vm.hostname = "client"
+    client.vm.provision :ansible do |ansible|
+      ansible.playbook = "test/default.yml"
+      ansible.limit = "all"
+    end
   end
   # config.vm.provision "shell", inline: <<-SHELL
   #   sudo apt-get update

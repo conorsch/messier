@@ -1,0 +1,6 @@
+---
+- name: Run testing playbook.
+  hosts: server
+  roles:
+    - role: ../roles/server-config
+

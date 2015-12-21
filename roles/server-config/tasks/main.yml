@@ -1,0 +1,7 @@
+---
+- name: Install the server package.
+  sudo: yes
+  apt:
+    package: htop
+    state: present
+
