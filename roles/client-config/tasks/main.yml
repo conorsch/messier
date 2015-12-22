@@ -1,0 +1,6 @@
+---
+- name: Install client package.
+  sudo: yes
+  apt:
+    package: vim
+    state: present

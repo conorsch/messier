@@ -1,6 +1,11 @@
 ---
-- name: default
+- name: server-default
   hosts: server
   roles:
     - role: server-config
+
+- name: client-default
+  hosts: client
+  roles:
+    - role: client-config
 
