@@ -19,6 +19,7 @@ Options:
   --wait <seconds>         Time to sleep after destroying [default: 10].
   --pristine               Destroy VMs prior to run.
   --reboot                 Reboot hosts prior to running Serverspec tests.
+  --destroy                Destroy hosts after running Serverspec tests.
 
 """
 from docopt import docopt
@@ -68,7 +69,13 @@ def create_vms(args):
 
 
 def verify_vms(args):
-    subprocess.check_call(["bundle", "exec", "rake", "serverspec:default"])
+    try:
+        subprocess.check_call(["bundle", "exec", "rake", "serverspec:default"])
+    except subprocess.CalledProcessError:
+        print("Serverspec run failed.")
+    finally:
+        if args["--destroy"]:
+            destroy_vms(args)
 
 
 if __name__ == "__main__":
@@ -92,4 +99,5 @@ if __name__ == "__main__":
         provision_vms(args)
         reload_vms(args)
         verify_vms(args)
+        destroy_vms(args)
 
