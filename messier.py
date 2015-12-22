@@ -80,8 +80,6 @@ def verify_vms(args):
 
 if __name__ == "__main__":
     args = docopt(__doc__, version='0.1')
-    print(args)
-
     args['vms'] = available_vms(args)
 
     if args['<command>'] == 'create':
