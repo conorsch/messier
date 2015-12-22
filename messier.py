@@ -19,7 +19,7 @@ Options:
   --wait <seconds>         Time to sleep after destroying [default: 10].
   --pristine               Destroy VMs prior to run.
   --reboot                 Reboot hosts prior to running Serverspec tests.
-  --destroy                Destroy hosts after running Serverspec tests.
+  --destroy <strategy>     Destroy hosts <passing|always|never> after running test suite [default: passing].
   --playbook <playbook>    Path to Ansible playbook for testing [default: test/default.yml].
 
 """
@@ -82,8 +82,10 @@ def verify_vms(args):
 
     except subprocess.CalledProcessError:
         print("Serverspec run failed.")
+        raise
+
     finally:
-        if args["--destroy"]:
+        if args["--destroy"] == "always":
             destroy_vms(args)
 
 
@@ -104,6 +106,9 @@ if __name__ == "__main__":
         destroy_vms(args)
         create_vms(args)
         provision_vms(args)
-        reload_vms(args)
+        if args['--reboot']:
+            reload_vms(args)
         verify_vms(args)
+        if args['--destroy'] == "passing":
+            destroy_vms(args)
 
