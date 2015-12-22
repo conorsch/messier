@@ -6,7 +6,6 @@ Vagrant.configure(2) do |config|
 
 
   # Shared VirtualBox settings for all hosts.
-  config.vm.box = "fgrehm/trusty64-lxc"
   config.vm.box = "ubuntu/trusty64"
 
   config.vm.box_check_update = false
