@@ -14,7 +14,6 @@ namespace :serverspec do
   properties.each do |property|
     property["hosts"].each do |host|
       desc "Run serverspec for #{property["name"]}"
-      host["name"] = host["name"].split.first
       RSpec::Core::RakeTask.new(property["name"].to_sym) do |t|
         puts "Run serverspec for #{property["name"]} to #{host["name"]}"
         if host.instance_of?(Hash)
