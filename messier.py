@@ -68,7 +68,7 @@ def create_vms(args):
 
 
 def verify_vms(args):
-    subprocess.call(["bundle", "exec", "rake", "serverspec:default"])
+    subprocess.check_call(["bundle", "exec", "rake", "serverspec:default"])
 
 
 if __name__ == "__main__":
