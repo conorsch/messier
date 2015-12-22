@@ -1,2 +1,3 @@
-python-vagrant
 docopt
+python-vagrant
+pyyaml

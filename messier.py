@@ -20,6 +20,7 @@ Options:
   --pristine               Destroy VMs prior to run.
   --reboot                 Reboot hosts prior to running Serverspec tests.
   --destroy                Destroy hosts after running Serverspec tests.
+  --playbook <playbook>    Path to Ansible playbook for testing [default: test/default.yml].
 
 """
 from docopt import docopt
@@ -31,10 +32,16 @@ from docopt import docopt
 
 import vagrant
 import subprocess
+import yaml
 
 
 v = vagrant.Vagrant(quiet_stdout=False)
 
+
+def parse_playbook(args):
+    playbook = open(args['--playbook'], 'r')
+    y = yaml.load(playbook)
+    return [play['name'] for play in y]
 
 def available_vms(args):
     wanted_vms = [vm for vm in v.status()]
@@ -70,7 +77,9 @@ def create_vms(args):
 
 def verify_vms(args):
     try:
-        subprocess.check_call(["bundle", "exec", "rake", "serverspec:default"])
+        for suite in parse_playbook(args):
+            subprocess.check_call(["bundle", "exec", "rake", "serverspec:{}".format(suite)])
+
     except subprocess.CalledProcessError:
         print("Serverspec run failed.")
     finally:
@@ -97,5 +106,4 @@ if __name__ == "__main__":
         provision_vms(args)
         reload_vms(args)
         verify_vms(args)
-        destroy_vms(args)
 
