@@ -2,7 +2,7 @@
 """Messier.
 
 Usage:
-  messier.py <command> [--provider <provider>] [<vms> ...]
+  messier.py <command> [options] [<vms> ...]
 
 Examples:
   messier.py create server
