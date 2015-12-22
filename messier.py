@@ -44,11 +44,13 @@ def parse_playbook(args):
     y = yaml.load(playbook)
     return [play['name'] for play in y]
 
+
 def available_vms(args):
-    wanted_vms = [vm for vm in v.status()]
+    possible_vms = [vm for vm in v.status()]
     if args['<vms>']:
         wanted_vms = [vm for vm in wanted_vms if vm in args['<vms>']]
-    return wanted_vms
+        possible_vms = wanted_vms
+    return possible_vms
 
 
 def provision_vms(args):
@@ -80,11 +82,9 @@ def verify_vms(args):
     try:
         for suite in parse_playbook(args):
             subprocess.check_call(["bundle", "exec", "rake", "serverspec:{}".format(suite)])
-
     except subprocess.CalledProcessError:
         print("Serverspec run failed.")
         raise
-
     finally:
         if args["--destroy"] == "always":
             destroy_vms(args)
@@ -111,7 +111,7 @@ if __name__ == "__main__":
         if args['--reboot']:
             reload_vms(args)
         verify_vms(args)
-        if args['--destroy'] == "passing" and \
-                not args['--keep']:
+        if args['--destroy'] == "passing" \
+                and not args['--keep']:
             destroy_vms(args)
 
