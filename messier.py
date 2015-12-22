@@ -50,7 +50,7 @@ def provision_vms(args):
 
 def reload_vms(args):
     for vm in args['vms']:
-        v.reload(vm_name=vm.name)
+        v.reload(vm_name=vm.name, provision=False)
 
 
 def destroy_vms(args):
@@ -65,7 +65,7 @@ def destroy_vms(args):
 
 def create_vms(args):
     for vm in args['vms']:
-        v.up(vm_name=vm.name, provider=args['--provider'], no_provision=True)
+        v.up(vm_name=vm.name, provider=args['--provider'], provision=False)
 
 
 def verify_vms(args):
