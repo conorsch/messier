@@ -29,6 +29,7 @@ namespace :serverspec do
           ENV['TARGET_USER'] = property["user"]
         end
         t.pattern = 'roles/{' + property["roles"].join(',') + '}/spec/*_spec.rb'
+        t.verbose = false
       end
     end
   end
