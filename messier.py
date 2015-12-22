@@ -21,6 +21,7 @@ Options:
   --reboot                 Reboot hosts prior to running Serverspec tests.
   --destroy <strategy>     Destroy hosts <passing|always|never> after running test suite [default: passing].
   --playbook <playbook>    Path to Ansible playbook for testing [default: test/default.yml].
+  --keep                   Preserve existing VMs for test run.
 
 """
 from docopt import docopt
@@ -103,12 +104,14 @@ if __name__ == "__main__":
         verify_vms(args)
 
     elif args['<command>'] == 'test':
-        destroy_vms(args)
+        if not args['--keep']:
+            destroy_vms(args)
         create_vms(args)
         provision_vms(args)
         if args['--reboot']:
             reload_vms(args)
         verify_vms(args)
-        if args['--destroy'] == "passing":
+        if args['--destroy'] == "passing" and \
+                not args['--keep']:
             destroy_vms(args)
 
