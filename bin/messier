@@ -25,19 +25,14 @@ Options:
   --keep                   Preserve existing VMs for test run.
 
 """
+import sys
 from docopt import docopt
-
-# command line options: test, provision, destroy, etc
-# in general, Vagrant commands should be honored. Depend on Vagrant
-# to manage provisioning regardless of backend. Greatly simplifies scope
-# of `messier`.
 
 import messier
 
 
 if __name__ == "__main__":
     args = docopt(__doc__, version='0.1')
-    print(args)
     m = messier.Messier(args)
     m.args['vms'] = m.available_vms()
 
@@ -83,4 +78,7 @@ if __name__ == "__main__":
         else:
             test_run()
 
+    else:
+        print("Command '{}' not supported. Run messier -h for usage info.".format(args['<command>']))
+        sys.exit(1)
 
