@@ -35,7 +35,6 @@ from docopt import docopt
 import messier
 
 
-
 if __name__ == "__main__":
     args = docopt(__doc__, version='0.1')
     print(args)
@@ -64,10 +63,20 @@ if __name__ == "__main__":
             m.destroy_vms()
 
     elif args['<command>'] == 'ci':
-        m.args['--destroy'] = "always"
-        m.destroy_vms()
-        m.create_vms()
-        m.provision_vms()
-        m.reload_vms()
-        m.verify_vms()
-        m.destroy_vms()
+        def test_run():
+            m.args['--destroy'] = "always"
+            m.destroy_vms()
+            m.create_vms()
+            m.provision_vms()
+            m.reload_vms()
+            m.verify_vms()
+            m.destroy_vms()
+
+        if m.config['vagrant_boxes']:
+            for box in m.config['vagrant_boxes']:
+                with m.env_var("VAGRANT_BOX", box):
+                    test_run()
+        else:
+            test_run()
+
+
