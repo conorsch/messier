@@ -9,10 +9,17 @@ class VagrantHandler(object):
     """
 
     def __init__(self):
+        """
+        Initialize Vagrant handler via self.v. Uses python-vagrant.
+        """
         self.v = vagrant.Vagrant()
 
 
     def available_vms(self):
+        """
+        List all VMs regardless of state, filtering if requested via the <vms>
+        parameter provider by the CLI.
+        """
         possible_vms = [vm for vm in self.v.status()]
         if self.args['<vms>']:
             wanted_vms = [vm for vm in possible_vms if vm.name in self.args['<vms>']]
@@ -21,7 +28,11 @@ class VagrantHandler(object):
 
 
     def provision_vms(self):
-
+        """
+        Runs provisioner (defaults to Ansible) against target VMs.
+        Vagrant handler will print provisioner output to STDOUT during
+        provisioner run, and resilence output after running.
+        """
         # Renable stdout to watch provisioner output
         self.v.out_cm = vagrant.stdout_cm
         for vm in self.args['vms']:
@@ -30,11 +41,17 @@ class VagrantHandler(object):
 
 
     def reload_vms(self):
+        """
+        Reboot target VMs. Operates on all available VMs if none are specified.
+        """
         for vm in self.args['vms']:
             self.v.reload(vm_name=vm.name, provision=False)
 
 
     def destroy_vms(self):
+        """
+        Destroy target VMs. Operates on all available VMs if none are specified.
+        """
         for vm in self.args['vms']:
             self.v.destroy(vm_name=vm.name)
             # Destroy a second time because the vagrant-digitalocean plugin
@@ -45,6 +62,10 @@ class VagrantHandler(object):
 
 
     def create_vms(self):
+        """
+        Create target VMs, but do not provision. Operates on all available 
+        VMs if none are specified.
+        """
         for vm in self.args['vms']:
             self.v.up(vm_name=vm.name, provider=self.args['--provider'], provision=False)
 

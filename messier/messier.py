@@ -12,7 +12,11 @@ from contextlib import contextmanager
 
 
 class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
-
+    """
+    Messier object for running multi-VM test suites. Interfaces with Vagrant
+    for VM management, assumes Ansible as provisioner, and uses `ansible_spec`
+    to run Serverspec tests.
+    """
 
     def __init__(self, args): 
         self.args = args
@@ -23,6 +27,13 @@ class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
    
 
     def parse_messier_config(self):
+        """
+        Read YAML config file for Messier. Defaults to .messier.
+        Supported options include:
+
+          `serverspec_commands`: list of shell commands to run for Serverspec
+          `serverspec_base_directory`: directory to cd into prior to running Serverspec
+        """
         try:
             config_file = open(self.args['--config'], 'r')
         except IOError:
