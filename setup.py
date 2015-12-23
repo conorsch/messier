@@ -7,6 +7,12 @@ try:
 except ImportError:
     from distutils.core import setup
 
+from pip.req import parse_requirements
+from pip.download import PipSession
+install_reqs = parse_requirements('requirements.txt', session=PipSession())
+
+reqs = [str(ir.req) for ir in install_reqs]
+print(reqs)
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -15,8 +21,11 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+
     # TODO: put package requirements here
 ]
+# Use pip-parsed output
+requirements = reqs
 
 test_requirements = [
     # TODO: put package test requirements here
@@ -53,6 +62,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
+    scripts=['bin/messier'],
     test_suite='tests',
     tests_require=test_requirements
 )
