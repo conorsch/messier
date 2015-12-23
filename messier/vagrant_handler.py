@@ -5,7 +5,7 @@ import vagrant
 class VagrantHandler(object):
 
     def __init__(self):
-        self.v = vagrant.Vagrant(quiet_stdout=False)
+        self.v = vagrant.Vagrant()
 
 
     def available_vms(self):
@@ -17,8 +17,12 @@ class VagrantHandler(object):
 
 
     def provision_vms(self):
+
+        # Renable stdout to watch provisioner output
+        self.v.out_cm = vagrant.stdout_cm
         for vm in self.args['vms']:
             self.v.provision(vm_name=vm.name)
+        self.v.out_cm = vagrant.devnull_cm
 
 
     def reload_vms(self):

@@ -65,11 +65,15 @@ if __name__ == "__main__":
     elif args['<command>'] == 'ci':
         def test_run():
             m.args['--destroy'] = "always"
+            print("Destroying VMs...")
             m.destroy_vms()
+            print("Creating VMs...")
             m.create_vms()
             m.provision_vms()
+            print("Rebooting VMs...")
             m.reload_vms()
             m.verify_vms()
+            print("Destroying VMs...")
             m.destroy_vms()
 
         if m.config['vagrant_boxes']:
