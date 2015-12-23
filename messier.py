@@ -48,7 +48,7 @@ def parse_playbook(args):
 def available_vms(args):
     possible_vms = [vm for vm in v.status()]
     if args['<vms>']:
-        wanted_vms = [vm for vm in wanted_vms if vm in args['<vms>']]
+        wanted_vms = [vm for vm in possible_vms if vm.name in args['<vms>']]
         possible_vms = wanted_vms
     return possible_vms
 
