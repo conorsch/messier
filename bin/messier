@@ -21,7 +21,7 @@ Options:
   --reboot                 Reboot hosts prior to running Serverspec tests.
   --destroy <strategy>     Destroy hosts <passing|always|never> after running test suite [default: passing].
   --playbook <playbook>    Path to Ansible playbook for testing [default: test/default.yml].
-  --config                 Path to Messier YAML config file [default: .messier].
+  --config <path>          Path to Messier YAML config file [default: .messier].
   --keep                   Preserve existing VMs for test run.
 
 """
