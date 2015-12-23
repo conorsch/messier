@@ -1,7 +1,7 @@
 require 'rake'
 require 'rspec/core/rake_task'
-require 'yaml'
 require 'ansible_spec'
+require 'yaml'
 
 properties = AnsibleSpec.get_properties
 
@@ -10,6 +10,9 @@ properties = AnsibleSpec.get_properties
 
 namespace :serverspec do
   properties.each do |property|
+    # Ensure "hosts" is a list. If no groups were specified, "hosts"
+    # will be a string, which will throw an error when using .each.
+    property["hosts"] = [*property["hosts"]]
     property["hosts"].each do |host|
       desc "Run serverspec for #{property["name"]}"
       RSpec::Core::RakeTask.new(property["name"].to_sym) do |t|
