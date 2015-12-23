@@ -63,3 +63,11 @@ if __name__ == "__main__":
                 and not args['--keep']:
             m.destroy_vms()
 
+    elif args['<command>'] == 'ci':
+        m.args['--destroy'] = "always"
+        m.destroy_vms()
+        m.create_vms()
+        m.provision_vms()
+        m.reload_vms()
+        m.verify_vms()
+        m.destroy_vms()

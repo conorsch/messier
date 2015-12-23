@@ -43,5 +43,5 @@ class ServerspecHandler(object):
             raise
         finally:
             if self.args["--destroy"] == "always":
-                    self.destroy_vms(self, self.args)
+                    self.destroy_vms()
 
