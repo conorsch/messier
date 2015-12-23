@@ -16,9 +16,13 @@ class AnsibleHandler(object):
 
 
     def parse_messier_config(self):
-        config = open(self.args['--config'], 'r')
-        y = yaml.load(config)
-        return y
-
-
+        try:
+            config_file = open(self.args['--config'], 'r')
+        except IOError:
+            config = {}
+        else:
+            config = yaml.load(config_file)
+            if not config:
+                config = {}
+        return config
 
