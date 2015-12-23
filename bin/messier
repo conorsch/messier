@@ -22,7 +22,7 @@ Options:
   --destroy <strategy>     Destroy hosts <passing|always|never> after running test suite [default: passing].
   --playbook <playbook>    Path to Ansible playbook for testing [default: test/default.yml].
   --keep                   Preserve existing VMs for test run.
-
+  --config                 Path to Messier YAML config file [default: .messier].
 """
 from docopt import docopt
 

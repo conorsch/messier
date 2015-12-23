@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import yaml
+
+
 class AnsibleHandler(object):
 
     def __init__(self):
@@ -12,7 +15,7 @@ class AnsibleHandler(object):
 
 
     def parse_messier_config(self, args):
-        playbook = open(args['--playbook'], 'r')
-        y = yaml.load(playbook)
-        return [play['name'] for play in y]
+        config = open(args['--config'], 'r')
+        y = yaml.load(config)
+        return y
 

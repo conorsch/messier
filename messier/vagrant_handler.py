@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
+import subprocess
+import vagrant
+
+
 class VagrantHandler(object):
+
     def __init__(self):
         self.v = vagrant.Vagrant(quiet_stdout=False)
 
