@@ -21,8 +21,9 @@ Options:
   --reboot                 Reboot hosts prior to running Serverspec tests.
   --destroy <strategy>     Destroy hosts <passing|always|never> after running test suite [default: passing].
   --playbook <playbook>    Path to Ansible playbook for testing [default: test/default.yml].
-  --keep                   Preserve existing VMs for test run.
   --config                 Path to Messier YAML config file [default: .messier].
+  --keep                   Preserve existing VMs for test run.
+
 """
 from docopt import docopt
 
@@ -37,6 +38,7 @@ import messier
 
 if __name__ == "__main__":
     args = docopt(__doc__, version='0.1')
+    print(args)
     m = messier.Messier(args)
     m.args['vms'] = m.available_vms()
 

@@ -6,6 +6,7 @@ class AnsibleHandler(object):
 
     def __init__(self):
         pass
+        self.config = self.parse_messier_config()
 
 
     def parse_playbook(self):
@@ -18,4 +19,6 @@ class AnsibleHandler(object):
         config = open(self.args['--config'], 'r')
         y = yaml.load(config)
         return y
+
+
 

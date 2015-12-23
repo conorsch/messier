@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import subprocess
 import vagrant
 
 
@@ -41,16 +40,4 @@ class VagrantHandler(object):
         for vm in self.args['vms']:
             self.v.up(vm_name=vm.name, provider=self.args['--provider'], provision=False)
 
-
-    def verify_vms(self):
-        r
-        try:
-            for suite in self.parse_playbook(self.args):
-                subprocess.check_call(["bundle", "exec", "rake", "serverspec:{}".format(suite)])
-        except subprocess.CalledProcessError:
-            print("Serverspec run failed.")
-            raise
-        finally:
-            if self.args["--destroy"] == "always":
-                self.destroy_vms(self, self.args)
 
