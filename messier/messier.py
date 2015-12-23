@@ -9,9 +9,10 @@ from .vagrant_handler import VagrantHandler
 class Messier(AnsibleHandler, VagrantHandler):
 
 
-    def __init__(self): 
+    def __init__(self, args): 
         AnsibleHandler.__init__(self)
         VagrantHandler.__init__(self)
+        self.args = args
    
 
 

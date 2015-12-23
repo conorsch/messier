@@ -8,14 +8,14 @@ class AnsibleHandler(object):
         pass
 
 
-    def parse_playbook(self, args):
-        playbook = open(args['--playbook'], 'r')
+    def parse_playbook(self):
+        playbook = open(self.args['--playbook'], 'r')
         y = yaml.load(playbook)
         return [play['name'] for play in y]
 
 
-    def parse_messier_config(self, args):
-        config = open(args['--config'], 'r')
+    def parse_messier_config(self):
+        config = open(self.args['--config'], 'r')
         y = yaml.load(config)
         return y
 
