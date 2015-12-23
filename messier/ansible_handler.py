@@ -14,15 +14,3 @@ class AnsibleHandler(object):
         y = yaml.load(playbook)
         return [play['name'] for play in y]
 
-
-    def parse_messier_config(self):
-        try:
-            config_file = open(self.args['--config'], 'r')
-        except IOError:
-            config = {}
-        else:
-            config = yaml.load(config_file)
-            if not config:
-                config = {}
-        return config
-
