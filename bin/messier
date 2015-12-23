@@ -31,87 +31,33 @@ from docopt import docopt
 # to manage provisioning regardless of backend. Greatly simplifies scope
 # of `messier`.
 
-import vagrant
-import subprocess
-import yaml
+import messier
 
-
-v = vagrant.Vagrant(quiet_stdout=False)
-
-
-def parse_playbook(args):
-    playbook = open(args['--playbook'], 'r')
-    y = yaml.load(playbook)
-    return [play['name'] for play in y]
-
-
-def available_vms(args):
-    possible_vms = [vm for vm in v.status()]
-    if args['<vms>']:
-        wanted_vms = [vm for vm in possible_vms if vm.name in args['<vms>']]
-        possible_vms = wanted_vms
-    return possible_vms
-
-
-def provision_vms(args):
-    for vm in args['vms']:
-        v.provision(vm_name=vm.name)
-
-
-def reload_vms(args):
-    for vm in args['vms']:
-        v.reload(vm_name=vm.name, provision=False)
-
-
-def destroy_vms(args):
-    for vm in args['vms']:
-        v.destroy(vm_name=vm.name)
-        # Destroy a second time because the vagrant-digitalocean plugin
-        # doesn't clean up after itself:
-        # https://github.com/smdahlen/vagrant-digitalocean/issues/194
-        if vm.provider == "digital_ocean":
-            v.destroy(vm_name=vm.name)
-
-
-def create_vms(args):
-    for vm in args['vms']:
-        v.up(vm_name=vm.name, provider=args['--provider'], provision=False)
-
-
-def verify_vms(args):
-    try:
-        for suite in parse_playbook(args):
-            subprocess.check_call(["bundle", "exec", "rake", "serverspec:{}".format(suite)])
-    except subprocess.CalledProcessError:
-        print("Serverspec run failed.")
-        raise
-    finally:
-        if args["--destroy"] == "always":
-            destroy_vms(args)
 
 
 if __name__ == "__main__":
     args = docopt(__doc__, version='0.1')
-    args['vms'] = available_vms(args)
+    m = messier.Messier()
+    args['vms'] = m.available_vms(args)
 
     if args['<command>'] == 'create':
-        create_vms(args)
+        m.create_vms(args)
 
     elif args['<command>'] == 'destroy':
-        destroy_vms(args)
+        m.destroy_vms(args)
 
     elif args['<command>'] == 'verify':
-        verify_vms(args)
+        m.verify_vms(args)
 
     elif args['<command>'] == 'test':
         if not args['--keep']:
-            destroy_vms(args)
-        create_vms(args)
-        provision_vms(args)
+            m.destroy_vms(args)
+        m.create_vms(args)
+        m.provision_vms(args)
         if args['--reboot']:
-            reload_vms(args)
-        verify_vms(args)
+            m.reload_vms(args)
+        m.verify_vms(args)
         if args['--destroy'] == "passing" \
                 and not args['--keep']:
-            destroy_vms(args)
+            m.destroy_vms(args)
 
