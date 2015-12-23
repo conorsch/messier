@@ -35,8 +35,17 @@ class VagrantHandler(object):
         """
         # Renable stdout to watch provisioner output
         self.v.out_cm = vagrant.stdout_cm
-        for vm in self.args['vms']:
-            self.v.provision(vm_name=vm.name)
+
+        # In multi-machine environments, the Ansible provisioner for Vagrant
+        # expects only a single target, allowing Ansible to handle sorting out
+        # the correct host list via limit=all.
+        if 'provision_target' in self.config:
+            self.v.provision(vm_name=self.config['provision_target'])
+        else:
+            for vm in self.args['vms']:
+                self.v.provision(vm_name=vm.name)
+
+        # Resilence stdout to noisy Vagrant commands don't pollute output.
         self.v.out_cm = vagrant.devnull_cm
 
 
