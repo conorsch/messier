@@ -16,12 +16,20 @@ def cd(newdir):
 
 
 class ServerspecHandler(object):
+    """
+    Messier utility class for managing Serverspec test suites.
+    All methods are accessible via the Messier object. Call them from Messier.
+    """
 
     def __init__(self):
         pass
 
 
     def verify_vms(self):
+        """
+        Run Serverspec tests suites. Accepts options `serverspec_commands`
+        and `serverspec_base_directory` from the .messier config file.
+        """
 
         if 'serverspec_commands' in self.config:
             cmds = [cmd.split() for cmd in self.config['serverspec_commands']]

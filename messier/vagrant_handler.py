@@ -3,6 +3,10 @@ import vagrant
 
 
 class VagrantHandler(object):
+    """
+    Messier utility class for managing Vagrant VMs.
+    All methods are accessible via the Messier object. Call them from Messier.
+    """
 
     def __init__(self):
         self.v = vagrant.Vagrant()

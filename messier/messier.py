@@ -33,7 +33,6 @@ class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
                 config = {}
         return config
 
-
     # Elegant solution from https://gist.github.com/LeoHuckvale/8f50f8f2a6235512827b
     # Stuffing this method into class because it's harder to reference otherwise
     @contextmanager
