@@ -92,7 +92,11 @@ if __name__ == "__main__":
     m = messier.Messier(args)
     m.args['vms'] = m.available_vms()
 
-    if args['<command>'] == 'create':
+    if args['<command>'] == 'list':
+        for vm in m.available_vms():
+            print(vm)
+
+    elif args['<command>'] == 'create':
         m.create_vms()
 
     elif args['<command>'] == 'destroy':
