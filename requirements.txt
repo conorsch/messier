@@ -1,3 +1,4 @@
+blessings
 docopt
 python-vagrant
 pyyaml

@@ -27,8 +27,22 @@ Options:
 """
 import sys
 from docopt import docopt
+from blessings import Terminal
 
 import messier
+
+
+t = Terminal()
+
+
+def info(msg, color="bold"):
+    """
+    Print human-readable output during Messier test run.
+    Defaults to "bold" terminal formatting, override with `color="red"` or similar.
+    """
+    terminal_format = getattr(t, color)
+    print(terminal_format("==> Messier: {}".format(msg)))
+
 
 
 if __name__ == "__main__":
@@ -60,20 +74,20 @@ if __name__ == "__main__":
     elif args['<command>'] == 'ci':
         def test_run():
             m.args['--destroy'] = "always"
-            print("Destroying VMs...")
+            info("Destroying VMs...")
             m.destroy_vms()
-            print("Creating VMs...")
+            info("Creating VMs...")
             m.create_vms()
             m.provision_vms()
-            print("Rebooting VMs...")
+            info("Rebooting VMs...")
             m.reload_vms()
             m.verify_vms()
-            print("Destroying VMs...")
+            info("Destroying VMs...")
             m.destroy_vms()
 
         if m.config['vagrant_boxes']:
             for index, box in enumerate(m.config['vagrant_boxes']):
-                print("Test suite {} of {}, using base box {}...".format(index + 1,
+                info("Test suite {} of {}, using base box {}...".format(index + 1,
                     len(m.config['vagrant_boxes']), box)
                     )
                 with m.env_var("VAGRANT_BOX", box):
@@ -82,6 +96,7 @@ if __name__ == "__main__":
             test_run()
 
     else:
-        print("Command '{}' not supported. Run messier -h for usage info.".format(args['<command>']))
+        info("Command '{}' not supported. Run messier -h for usage info.".format(args['<command>']),
+                color="red")
         sys.exit(1)
 
