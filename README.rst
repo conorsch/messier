@@ -13,7 +13,7 @@ Messier
         :alt: Documentation Status
 
 
-Test Ansible roles with Vagrant, similar to Test Kitchen
+Test Ansible roles with Vagrant. Inspired by Test Kitchen.
 
 * Free software: ISC license
 * Documentation: https://messier.readthedocs.org.
@@ -21,7 +21,12 @@ Test Ansible roles with Vagrant, similar to Test Kitchen
 Features
 --------
 
-* TODO
+* Supports multi-machine roles
+* Permits reboots during provisioning
+* Use any backend provider available in Vagrant (VirtualBox, AWS, DigitalOcean, etc.)
+* Runs Serverspec tests per role
+* Integrates with preexisting Serverspec setups
+
 
 Credits
 ---------
