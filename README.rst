@@ -27,6 +27,16 @@ Features
 * Runs Serverspec tests per role
 * Integrates with preexisting Serverspec setups
 
+Motivation
+----------
+
+Test Kitchen is a wonderful solution for testing system configuration—if you use Chef.
+Its support for Ansible is, however, lacking. Similar to Packer, Test Kitchen tries
+to run Ansible in "local" mode, which makes it impossible to test multi-machine roles
+for service orchestration. Well-meaning projects such as kitchen-ansiblepush (not to
+be mistaken with Ansible push mode) enable more traditional Ansible usage patterns,
+but still suffer from limitations such as reboots always triggering failure.
+
 
 Credits
 ---------
