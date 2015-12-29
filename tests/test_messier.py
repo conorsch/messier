@@ -17,7 +17,7 @@ from messier import messier
 class TestMessier(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.messier = messier.Messier()
 
     def tearDown(self):
         pass
@@ -25,12 +25,17 @@ class TestMessier(unittest.TestCase):
     def test_000_something(self):
         pass
 
-    def test_init(self):
+    def test_empty_config(self):
         """
         Create a .messier config file and validate its contents.
         """
-        messier.config.init()
-        assert os.path.existS(".messier")
+        config = self.messier.config()
+        self.assertEqual(config, {})
+
+
+    def test_custom_config(self):
+        pass
+        assert os.path.exists(".messier")
 
 
 
