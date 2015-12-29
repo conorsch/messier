@@ -13,6 +13,7 @@ import os
 import tempfile
 
 from messier import messier
+from messier.serverspec_handler import cd
 
 
 class TestMessier(unittest.TestCase):
@@ -35,27 +36,32 @@ class TestMessier(unittest.TestCase):
 
     def test_empty_config(self):
         """
-        Create a .messier config file and validate its contents.
+        Create a Messier object with no config and ensure config is empty.
         """
-        config = self.messier.config
-        self.assertEqual(config, {})
+        temp_dir = tempfile.mkdtemp()
+        with cd(temp_dir):
+            m = messier.Messier()
+        self.assertEqual(m.config, {})
 
     def test_custom_config(self, content=None):
+        """
+        Create a Messier object with a custom config file and validate the config matches.
+        """
         content = """
         ---
         vagrant_boxes:
           - ubuntu/trusty64
           - ubuntu/vivid64
+          - debian/jessie64
         """.strip()
-        config, config_path  = tempfile.mkstemp(text=True)
-
+        config_path = tempfile.mktemp()
         with open(config_path, 'w') as f:
             f.write(content)
         m = messier.Messier(config_file=config_path)
-        desired_boxes = ['ubuntu/trusty64', 'ubuntu/vivid64']
+        assert os.path.exists(config_path)
+        desired_boxes = ['ubuntu/trusty64', 'ubuntu/vivid64', 'debian/jessie64']
         for box in desired_boxes:
             assert box in m.config['vagrant_boxes']
-        assert os.path.exists(".messier")
 
 
 if __name__ == '__main__':
