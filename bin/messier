@@ -89,7 +89,10 @@ def test_run(m):
 
 if __name__ == "__main__":
     args = docopt(__doc__, version='0.1')
-    m = messier.Messier(args)
+    m = messier.Messier(
+            args,
+            config_file=args['--config'],
+            )
     m.args['vms'] = m.available_vms()
 
     if args['<command>'] == 'list':

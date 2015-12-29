@@ -18,15 +18,16 @@ class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
     to run Serverspec tests.
     """
 
-    def __init__(self, args): 
-        self.args = args
+    def __init__(self, config_file=".messier"):
+        #self.args = args
         AnsibleHandler.__init__(self)
         VagrantHandler.__init__(self)
         ServerspecHandler.__init__(self)
-        self.config = self.parse_messier_config()
+        self.config = self.parse_messier_config(config_file=config_file)
 
 
-    def parse_messier_config(self):
+
+    def parse_messier_config(self, config_filepath=".messier"):
         """
         Read YAML config file for Messier. Defaults to .messier.
         Supported options include:
@@ -35,7 +36,7 @@ class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
           `serverspec_base_directory`: directory to cd into prior to running Serverspec
         """
         try:
-            config_file = open(self.args['--config'], 'r')
+            config_file = open(config_filepath,'r')
         except IOError:
             config = {}
         else:
@@ -43,6 +44,7 @@ class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
             if not config:
                 config = {}
         return config
+
 
     # Elegant solution from https://gist.github.com/LeoHuckvale/8f50f8f2a6235512827b
     # Stuffing this method into class because it's harder to reference otherwise

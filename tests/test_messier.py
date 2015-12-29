@@ -32,6 +32,12 @@ class TestMessier(unittest.TestCase):
         config = self.messier.config()
         self.assertEqual(config, {})
 
+    def test_empty_config(self):
+        """
+        Create a .messier config file and validate its contents.
+        """
+        config = self.messier.config()
+        self.assertEqual(config, {})
 
     def test_custom_config(self):
         pass
