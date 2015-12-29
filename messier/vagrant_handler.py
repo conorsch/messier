@@ -24,6 +24,8 @@ class VagrantHandler(object):
         if self.vms:
             wanted_vms = [vm for vm in possible_vms if vm.name in self.vms]
             possible_vms = wanted_vms
+        else:
+            self.vms = possible_vms
         return possible_vms
 
 
@@ -76,5 +78,5 @@ class VagrantHandler(object):
         VMs if none are specified.
         """
         for vm in self.vms:
-            self.v.up(vm_name=vm.name, provider=self.provider['--provider'], provision=False)
+            self.v.up(vm_name=vm.name, provider=self.provider, provision=False)
 
