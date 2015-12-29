@@ -44,17 +44,17 @@ def info(msg, color="bold"):
     print(terminal_format("==> Messier: {}".format(msg)))
 
 
-def test_run(m):
+def test_run(m, args):
     """
     Run full test suite, including create, provision, verify, and destroy.
     """
-    def _test_run(m):
+    def _test_run(m, args):
         """
         Wrapper function for encapsulating test run logic,
         so tests can run multiple times against different boxes.
         Called by `test_run()`; use that.
         """
-        if not m.args['--keep']:
+        if not args['--keep']:
             info("Destroying VMs...")
             m.destroy_vms()
 
@@ -82,7 +82,7 @@ def test_run(m):
                 len(m.config['vagrant_boxes']), box)
                 )
             with m.env_var("VAGRANT_BOX", box):
-                _test_run(m)
+                _test_run(m, args)
     else:
         _test_run(m)
 
@@ -90,11 +90,12 @@ def test_run(m):
 if __name__ == "__main__":
     args = docopt(__doc__, version='0.1')
     m = messier.Messier(
-            args,
             config_file=args['--config'],
             vms=args['<vms>'],
+            provider=args['--provider'],
             )
-    m.args['vms'] = m.available_vms()
+    args['vms'] = m.available_vms()
+    m.args = args
 
     if args['<command>'] == 'list':
         for vm in m.available_vms():
@@ -110,12 +111,12 @@ if __name__ == "__main__":
         m.verify_vms()
 
     elif args['<command>'] == 'test':
-        test_run(m)
+        test_run(m, args)
 
     elif args['<command>'] == 'ci':
         if not args['--keep']:
-            m.args['--destroy'] == "always"
-        test_run(m)
+            args['--destroy'] == "always"
+        test_run(m, args)
 
     else:
         info("Command '{}' not supported. Run messier -h for usage info.".format(args['<command>']),
