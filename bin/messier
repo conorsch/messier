@@ -92,6 +92,7 @@ if __name__ == "__main__":
     m = messier.Messier(
             args,
             config_file=args['--config'],
+            vms=args['<vms>'],
             )
     m.args['vms'] = m.available_vms()
 

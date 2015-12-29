@@ -36,7 +36,7 @@ class TestMessier(unittest.TestCase):
         """
         Create a .messier config file and validate its contents.
         """
-        config = self.messier.config()
+        config = self.messier.config
         self.assertEqual(config, {})
 
     def test_custom_config(self):

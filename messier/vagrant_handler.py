@@ -22,7 +22,7 @@ class VagrantHandler(object):
         """
         possible_vms = [vm for vm in self.v.status()]
         if self.args['<vms>']:
-            wanted_vms = [vm for vm in possible_vms if vm.name in self.args['<vms>']]
+            wanted_vms = [vm for vm in possible_vms if vm.name in self.vms]
             possible_vms = wanted_vms
         return possible_vms
 
@@ -42,7 +42,7 @@ class VagrantHandler(object):
         if 'provision_target' in self.config:
             self.v.provision(vm_name=self.config['provision_target'])
         else:
-            for vm in self.args['vms']:
+            for vm in self.vms:
                 self.v.provision(vm_name=vm.name)
 
         # Resilence stdout to noisy Vagrant commands don't pollute output.
@@ -53,7 +53,7 @@ class VagrantHandler(object):
         """
         Reboot target VMs. Operates on all available VMs if none are specified.
         """
-        for vm in self.args['vms']:
+        for vm in self.vms:
             self.v.reload(vm_name=vm.name, provision=False)
 
 
@@ -61,7 +61,7 @@ class VagrantHandler(object):
         """
         Destroy target VMs. Operates on all available VMs if none are specified.
         """
-        for vm in self.args['vms']:
+        for vm in self.vms:
             self.v.destroy(vm_name=vm.name)
             # Destroy a second time because the vagrant-digitalocean plugin
             # doesn't clean up after itself:
@@ -75,7 +75,7 @@ class VagrantHandler(object):
         Create target VMs, but do not provision. Operates on all available 
         VMs if none are specified.
         """
-        for vm in self.args['vms']:
+        for vm in self.vms:
             self.v.up(vm_name=vm.name, provider=self.args['--provider'], provision=False)
 
 

@@ -18,13 +18,16 @@ class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
     to run Serverspec tests.
     """
 
-    def __init__(self, config_file=".messier"):
+    def __init__(self, config_file=".messier", vms=None):
         #self.args = args
         AnsibleHandler.__init__(self)
         VagrantHandler.__init__(self)
         ServerspecHandler.__init__(self)
-        self.config = self.parse_messier_config(config_file=config_file)
+        self.config = self.parse_messier_config(config_filepath=config_file)
 
+        if not vms:
+            vms = []
+        self.vms = vms
 
 
     def parse_messier_config(self, config_filepath=".messier"):
