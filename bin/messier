@@ -84,7 +84,7 @@ def test_run(m, args):
             with m.env_var("VAGRANT_BOX", box):
                 _test_run(m, args)
     else:
-        _test_run(m)
+        _test_run(m, args)
 
 
 if __name__ == "__main__":
