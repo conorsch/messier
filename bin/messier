@@ -2,16 +2,16 @@
 """Messier.
 
 Usage:
-  messier.py <command> [options] [<vms> ...]
+  messier <command> [options] [<vms> ...]
 
 Examples:
-  messier.py create server
-  messier.py converge
-  messier.py verify
-  messier.py test
-  messier.py list
-  messier.py (-h | --help)
-  messier.py --version
+  messier create server
+  messier converge
+  messier verify
+  messier test
+  messier list
+  messier (-h | --help)
+  messier --version
 
 Options:
   -h --help                Show this screen.
