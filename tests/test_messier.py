@@ -29,13 +29,6 @@ class TestMessier(unittest.TestCase):
 
     def test_empty_config(self):
         """
-        Create a .messier config file and validate its contents.
-        """
-        config = self.messier.config()
-        self.assertEqual(config, {})
-
-    def test_empty_config(self):
-        """
         Create a Messier object with no config and ensure config is empty.
         """
         temp_dir = tempfile.mkdtemp()
