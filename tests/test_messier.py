@@ -56,6 +56,16 @@ class TestMessier(unittest.TestCase):
         for box in desired_boxes:
             assert box in m.config['vagrant_boxes']
 
+    def test_init_creates_vagrantfile_if_none(self):
+        """
+        Create a new Messier project with a Vagrantfile.
+        """
+        temp_dir = tempfile.mkdtemp()
+        assert not os.path.exists(os.path.join(temp_dir, 'Vagrantfile'))
+        with cd(temp_dir):
+            m = messier.Messier()
+        assert os.path.exists(os.path.join(temp_dir, 'Vagrantfile'))
+
 
 if __name__ == '__main__':
     import sys
