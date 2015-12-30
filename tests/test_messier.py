@@ -11,6 +11,7 @@ Tests for `messier` module.
 import unittest
 import os
 import tempfile
+import yaml
 
 from messier import messier
 from messier.serverspec_handler import cd
@@ -40,19 +41,13 @@ class TestMessier(unittest.TestCase):
         """
         Create a Messier object with a custom config file and validate the config matches.
         """
-        content = """
-        ---
-        vagrant_boxes:
-          - ubuntu/trusty64
-          - ubuntu/vivid64
-          - debian/jessie64
-        """.strip()
+        desired_boxes = ['ubuntu/trusty64', 'ubuntu/vivid64', 'debian/jessie64']
+        content = dict(vagrant_boxes=desired_boxes)
         config_path = tempfile.mktemp()
         with open(config_path, 'w') as f:
-            f.write(content)
+            f.write(yaml.dump(content, default_flow_style=True))
         m = messier.Messier(config_file=config_path)
         assert os.path.exists(config_path)
-        desired_boxes = ['ubuntu/trusty64', 'ubuntu/vivid64', 'debian/jessie64']
         for box in desired_boxes:
             assert box in m.config['vagrant_boxes']
 
