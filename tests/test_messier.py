@@ -56,6 +56,7 @@ class TestMessier(unittest.TestCase):
         for box in desired_boxes:
             assert box in m.config['vagrant_boxes']
 
+    @unittest.skip("`init` command not yet supported")
     def test_init_creates_vagrantfile_if_none(self):
         """
         Create a new Messier project with a Vagrantfile.
