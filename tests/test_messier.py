@@ -12,6 +12,7 @@ import unittest
 import os
 import tempfile
 import yaml
+import hashlib
 
 from messier import messier
 from messier.serverspec_handler import cd
@@ -61,6 +62,21 @@ class TestMessier(unittest.TestCase):
         with cd(temp_dir):
             m = messier.Messier()
         assert os.path.exists(os.path.join(temp_dir, 'Vagrantfile'))
+
+    @unittest.skip("`init` command not yet supported")
+    def test_init_does_not_clobber_vagrantfile(self):
+        """
+        Create a new Messier project and refuse to overwrite preexisting Vagrantfile.
+        """
+        temp_dir = tempfile.mkdtemp()
+        vagrantfile = tempfile.mktemp(dir=temp_dir)
+        assert os.path.exists(os.path.join(temp_dir, 'Vagrantfile'))
+        original_checksum = hashlib.sha256(vagrantfile).hexdigest()
+        with cd(temp_dir):
+            m = messier.Messier()
+        assert os.path.exists(os.path.join(temp_dir, 'Vagrantfile'))
+        new_checksum = hashlib.sha256(vagrantfile).hexdigest()
+        assert new_checksum == original_checksum
 
 
 if __name__ == '__main__':
