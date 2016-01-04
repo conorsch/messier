@@ -15,9 +15,6 @@ Messier
 
 Test Ansible roles with Vagrant. Inspired by Test Kitchen.
 
-* Free software: ISC license
-* Documentation: https://messier.readthedocs.org.
-
 Features
 --------
 
