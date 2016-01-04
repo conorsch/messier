@@ -27,6 +27,8 @@ class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
         if not vms:
             vms = []
         self.vms = vms
+        # Convert VM names to VM objects
+        self.vms = self.available_vms()
         self.provider = provider
 
 
