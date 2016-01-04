@@ -39,6 +39,10 @@ polluted with additional software in order to accommodate test running. Serversp
 has an SSH transport built into it, and Test Kitchen ignores that functionality completely.
 
 
+TODO
+----
+
+* Add `init` command for bootstrapping Messier config
 
 
 License
