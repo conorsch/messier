@@ -64,12 +64,14 @@ class VagrantHandler(object):
         Destroy target VMs. Operates on all available VMs if none are specified.
         """
         for vm in self.vms:
-            self.v.destroy(vm_name=vm.name)
-            # Destroy a second time because the vagrant-digitalocean plugin
-            # doesn't clean up after itself:
-            # https://github.com/smdahlen/vagrant-digitalocean/issues/194
-            if vm.provider == "digital_ocean":
+            # Vagrant will return 1 if VM to be destroyed does not exist.
+            if vm.state != "not_created":
                 self.v.destroy(vm_name=vm.name)
+                # Destroy a second time because the vagrant-digitalocean plugin
+                # doesn't clean up after itself:
+                # https://github.com/smdahlen/vagrant-digitalocean/issues/194
+                if vm.provider == "digital_ocean":
+                    self.v.destroy(vm_name=vm.name)
 
 
     def create_vms(self):
