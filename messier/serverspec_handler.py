@@ -3,7 +3,7 @@ import subprocess
 from contextlib import contextmanager
 import os
 
-from .exceptions import ServerspecGemfileNotFound
+from .exceptions import ServerspecGemfileNotFound, AnsiblePlaybookNotFound
 
 
 # Magnificent StackOverflow answer: http://stackoverflow.com/a/24176022/140800
@@ -60,6 +60,9 @@ class ServerspecHandler(object):
         Read testing playbook and return a list of `name` attributes for each task.
         This mirrors how `ansible_spec` determines Serverspec test runs.
         """
-        playbook = open(self.config['playbook'], 'r')
+        try:
+            playbook = open(self.playbook, 'r')
+        except IOError:
+            raise AnsiblePlaybookNotFound
         y = yaml.load(playbook)
         return [play['name'] for play in y]

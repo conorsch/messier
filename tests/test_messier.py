@@ -20,7 +20,7 @@ import time
 from messier import messier
 from messier.serverspec_handler import cd
 
-from messier.exceptions import VagrantfileNotFound, ServerspecGemfileNotFound
+from messier.exceptions import VagrantfileNotFound, ServerspecGemfileNotFound, AnsiblePlaybookNotFound
 
 class TestMessier(unittest.TestCase):
 
@@ -160,11 +160,11 @@ class TestVagrantHandler(unittest.TestCase):
 class TestServerspecHandler(unittest.TestCase):
     """Tests the Serverspec handler subcommands for Messier object."""
 
-    def test_verify_vms(self):
+    def test_missing_playbook_raises_exception(self):
         temp_dir = tempfile.mkdtemp()
         with cd(temp_dir):
-            m = messier.Messier()
-            with self.assertRaises(ServerspecGemfileNotFound):
+            m = messier.Messier(playbook="test/default.yml")
+            with self.assertRaises(AnsiblePlaybookNotFound):
                 m.verify_vms()
 
 

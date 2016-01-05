@@ -12,3 +12,10 @@ class ServerspecGemfileNotFound(Exception):
     Error when no Gemfile is found within the Serverspec directory.
     """
     pass
+
+
+class AnsiblePlaybookNotFound(Exception):
+    """
+    Error when Ansible playbook for running Serverspec tests is not found.
+    """
+    pass
