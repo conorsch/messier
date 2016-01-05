@@ -112,6 +112,16 @@ class TestMessier(unittest.TestCase):
         for vm in m.vms:
             assert vm.state == "running"
 
+    def test_destroy_vms(self):
+        """
+        Destroy running VMs and ensure they're not running.
+        """
+        m = messier.Messier()
+        m.destroy_vms()
+        for vm in m.vms:
+            assert vm.state == "not created"
+
+
     def test_reload_vms(self):
         """
         Reboot VMs and check that uptime decreased.
