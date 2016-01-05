@@ -53,7 +53,13 @@ class ServerspecHandler(object):
                 raise ServerspecGemfileNotFound()
             else:
                 raise
-        finally:
-            if self.args["--destroy"] == "always":
-                    self.destroy_vms()
 
+
+    def parse_playbook(self):
+        """
+        Read testing playbook and return a list of `name` attributes for each task.
+        This mirrors how `ansible_spec` determines Serverspec test runs.
+        """
+        playbook = open(self.config['playbook'], 'r')
+        y = yaml.load(playbook)
+        return [play['name'] for play in y]

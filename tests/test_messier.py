@@ -20,7 +20,7 @@ import time
 from messier import messier
 from messier.serverspec_handler import cd
 
-from messier.exceptions import VagrantfileNotFound
+from messier.exceptions import VagrantfileNotFound, ServerspecGemfileNotFound
 
 class TestMessier(unittest.TestCase):
 
@@ -155,6 +155,17 @@ class TestVagrantHandler(unittest.TestCase):
 
         for k, v in original_uptimes.iteritems():
             assert new_uptimes[k] < v
+
+
+class TestServerspecHandler(unittest.TestCase):
+    """Tests the Serverspec handler subcommands for Messier object."""
+
+    def test_verify_vms(self):
+        temp_dir = tempfile.mkdtemp()
+        with cd(temp_dir):
+            m = messier.Messier()
+            with self.assertRaises(ServerspecGemfileNotFound):
+                m.verify_vms()
 
 
 if __name__ == '__main__':

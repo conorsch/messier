@@ -11,13 +11,3 @@ class AnsibleHandler(object):
     def __init__(self):
         pass
 
-
-    def parse_playbook(self):
-        """
-        Read testing playbook and return a list of `name` attributes for each task.
-        This mirrors how `ansible_spec` determines Serverspec test runs.
-        """
-        playbook = open(self.args['--playbook'], 'r')
-        y = yaml.load(playbook)
-        return [play['name'] for play in y]
-

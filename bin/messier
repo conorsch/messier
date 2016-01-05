@@ -97,9 +97,9 @@ if __name__ == "__main__":
             config_file=args['--config'],
             vms=args['<vms>'],
             provider=args['--provider'],
+            playbook=args['--playbook'],
             )
     args['vms'] = m.available_vms()
-    m.args = args
 
     if args['<command>'] == 'list':
         for vm in m.vms:
