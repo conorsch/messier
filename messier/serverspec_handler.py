@@ -3,6 +3,8 @@ import subprocess
 from contextlib import contextmanager
 import os
 
+from .exceptions import ServerspecGemfileNotFound
+
 
 # Magnificent StackOverflow answer: http://stackoverflow.com/a/24176022/140800
 @contextmanager
@@ -37,7 +39,6 @@ class ServerspecHandler(object):
         else:
             test_suites = self.parse_playbook()
             cmds = [["bundle", "exec", "rake", "serverspec:{}".format(suite)] for suite in test_suites]
-  
         try:
             # Change directories if necessary
             if 'serverspec_base_directory' in self.config:
@@ -47,8 +48,11 @@ class ServerspecHandler(object):
             else:
                 for cmd in cmds:
                     subprocess.check_call(cmd)
-        except subprocess.CalledProcessError:
-            raise
+        except subprocess.CalledProcessError as e:
+            if e.returncode == 10:
+                raise ServerspecGemfileNotFound()
+            else:
+                raise
         finally:
             if self.args["--destroy"] == "always":
                     self.destroy_vms()

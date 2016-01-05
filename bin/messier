@@ -68,7 +68,11 @@ def test_run(m, args):
             m.reload_vms()
 
         info("Running Serverspec tests...")
-        m.verify_vms()
+        try:
+            m.verify_vms()
+        except:
+            info("Could not find valid Serverspec config, skipping...")
+            pass
 
         if args['--destroy'] == "passing" \
                 and not args['--keep']:
@@ -108,7 +112,11 @@ if __name__ == "__main__":
         m.destroy_vms()
 
     elif args['<command>'] == 'verify':
-        m.verify_vms()
+        try:
+            m.verify_vms()
+        except:
+            info("Could not find valid Serverspec config.", color="red")
+            sys.exit(1)
 
     elif args['<command>'] == 'test':
         test_run(m, args)

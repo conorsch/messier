@@ -5,3 +5,10 @@ class VagrantfileNotFound(Exception):
     (same as vagrant itself). If it is not found, this exception will be raised.
     """
     pass
+
+
+class ServerspecGemfileNotFound(Exception):
+    """
+    Error when no Gemfile is found within the Serverspec directory.
+    """
+    pass
