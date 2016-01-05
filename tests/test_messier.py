@@ -100,6 +100,15 @@ class TestMessier(unittest.TestCase):
         new_checksum = hashlib.sha256(vagrantfile).hexdigest()
         assert new_checksum == original_checksum
 
+    def test_create_vms(self):
+        """
+        Create VMs from existing Vagrantfile and ensure they are running.
+        """
+        m = messier.Messier()
+        m.create_vms()
+        for vm in m.vms:
+            assert vm.state == "running"
+
 
 if __name__ == '__main__':
     import sys
