@@ -13,6 +13,8 @@ import os
 import tempfile
 import yaml
 import hashlib
+import subprocess
+import shlex
 
 from messier import messier
 from messier.serverspec_handler import cd
@@ -109,6 +111,35 @@ class TestMessier(unittest.TestCase):
         for vm in m.vms:
             assert vm.state == "running"
 
+    def test_reload_vms(self):
+        """
+        Reboot VMs and check that uptime decreased.
+        """
+        m = messier.Messier()
+        m.create_vms()
+        original_uptimes = {}
+
+        def get_uptime(vm):
+            """
+            Return uptime in seconds for vm
+            """
+            # Hideous one-liner, but it works.
+            cmd = """vagrant ssh {} --command \"cut -d' ' -f 1 /proc/uptime\" """.format(vm.name)
+            cmd = shlex.split(cmd)
+            return subprocess.check_output(cmd, stderr=open('/dev/null', 'w'))
+
+        for vm in m.vms:
+            uptime = get_uptime(vm)
+            original_uptimes[vm.name] = uptime
+
+        new_uptimes = {}
+        for vm in m.vms:
+            m.v.reload(vm_name=vm.name)
+            new_uptime = get_uptime(vm)
+            new_uptimes[vm.name] = new_uptime
+
+        for k, v in original_uptimes.items():
+            assert new_uptimes[k] < v
 
 if __name__ == '__main__':
     import sys
