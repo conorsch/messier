@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import vagrant
+from subprocess import CalledProcessError
+
+from .exceptions import VagrantfileNotFound
 
 
 class VagrantHandler(object):
@@ -20,7 +23,14 @@ class VagrantHandler(object):
         List all VMs regardless of state, filtering if requested via the <vms>
         parameter provider by the CLI.
         """
-        possible_vms = [vm for vm in self.v.status()]
+        try:
+            possible_vms = [vm for vm in self.v.status()]
+        except CalledProcessError, e:
+            # TODO: Exception handling here assumes Vagrantfile is missing.
+            # Vagrant seems to return 1 for many different errors, and finding
+            # documentation for specific return codes has proven difficult.
+            raise VagrantfileNotFound
+
         if self.vms:
             wanted_vms = [vm for vm in possible_vms if vm.name in self.vms]
             possible_vms = wanted_vms

@@ -17,6 +17,7 @@ import hashlib
 from messier import messier
 from messier.serverspec_handler import cd
 
+from messier.exceptions import VagrantfileNotFound
 
 class TestMessier(unittest.TestCase):
 
@@ -37,6 +38,15 @@ class TestMessier(unittest.TestCase):
         with cd(temp_dir):
             m = messier.Messier()
         self.assertEqual(m.config, {})
+
+    def test_empty_config_raises_exception(self):
+        """
+        Create a Messier object with no config and ensure config is empty.
+        """
+        temp_dir = tempfile.mkdtemp()
+        with self.assertRaises(VagrantfileNotFound):
+            with cd(temp_dir):
+                m = messier.Messier()
 
     def test_custom_config(self, content=None):
         """
