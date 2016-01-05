@@ -15,6 +15,7 @@ import yaml
 import hashlib
 import subprocess
 import shlex
+import shutil
 import time
 
 from messier import messier
@@ -26,12 +27,13 @@ class TestMessier(unittest.TestCase):
 
     def setUp(self):
         self.messier = messier.Messier()
+        self.temp_dir = tempfile.mkdtemp()
+
 
     def tearDown(self):
-        pass
+        if os.path.exists(self.temp_dir):
+            shutil.rmtree(self.temp_dir)
 
-    def test_000_something(self):
-        pass
 
     @unittest.skip("Not sure whether missing Vagrantfile should throw an error.")
     def test_empty_config(self):
@@ -140,16 +142,16 @@ class TestVagrantHandler(unittest.TestCase):
 
         def get_uptime(vm):
             """
-            Return uptime in seconds for vm
+            Return uptime in seconds for VM.
             """
             # Hideous one-liner, but it works.
             cmd = """vagrant ssh {} --command \"cut -d' ' -f 1 /proc/uptime\" """.format(vm.name)
             cmd = shlex.split(cmd)
             return subprocess.check_output(cmd, stderr=open('/dev/null', 'w'))
 
-        original_uptimes = { vm.name: get_uptime(vm) for vm in m.vms }
         # Sleep to make sure the original boot has a higher uptime
-        time.sleep(20)
+        time.sleep(10)
+        original_uptimes = { vm.name: get_uptime(vm) for vm in m.vms }
         m.reload_vms()
         new_uptimes = { vm.name: get_uptime(vm) for vm in m.vms }
 
@@ -162,6 +164,9 @@ class TestServerspecHandler(unittest.TestCase):
 
     def test_missing_playbook_raises_exception(self):
         temp_dir = tempfile.mkdtemp()
+        # Write Vagrantfile, otherwise VagrantfileNotFound will be raised first.
+        shutil.copy('Vagrantfile', temp_dir)
+
         with cd(temp_dir):
             m = messier.Messier(playbook="test/default.yml")
             with self.assertRaises(AnsiblePlaybookNotFound):
