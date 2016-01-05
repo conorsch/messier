@@ -64,8 +64,13 @@ class VagrantHandler(object):
         """
         Reboot target VMs. Operates on all available VMs if none are specified.
         """
-        for vm in self.vms:
-            self.v.reload(vm_name=vm.name, provision=False)
+
+        if 'reboot_vms' in self.config:
+            for vm in self.config['reboot_vms']:
+                self.v.reload(vm_name=vm, provision=False)
+        else:
+            for vm in self.vms:
+                self.v.reload(vm_name=vm.name, provision=False)
 
 
     def destroy_vms(self):
