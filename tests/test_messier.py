@@ -62,6 +62,16 @@ class TestMessier(unittest.TestCase):
         for box in desired_boxes:
             assert box in m.config['vagrant_boxes']
 
+    def test_list_vms(self, content=None):
+        """
+        Ensure named VM in Vagrantfile is returned by `messier list`.
+        """
+        # Uses tests directory?
+        m = messier.Messier(config_file=".messier")
+        vms = m.available_vms()
+        for vm in ("client", "server"):
+          assert vm in vms
+
     @unittest.skip("`init` command not yet supported")
     def test_init_creates_vagrantfile_if_none(self):
         """
