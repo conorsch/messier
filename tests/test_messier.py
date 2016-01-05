@@ -128,7 +128,7 @@ class TestVagrantHandler(unittest.TestCase):
         m = messier.Messier()
         m.destroy_vms()
         for vm in m.vms:
-            assert vm.state == "not created"
+            assert vm.state == "not_created"
 
 
     def test_reload_vms(self):
