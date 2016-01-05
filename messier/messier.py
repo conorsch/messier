@@ -24,15 +24,16 @@ class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
         VagrantHandler.__init__(self)
         ServerspecHandler.__init__(self)
         self.config = self.parse_messier_config(config_filepath=config_file)
+        self.target_vms=vms
         self.provider = provider
 
 
     @property
-    def vms(self, vms=None):
+    def vms(self):
         """
         Return a list of Vagrant VM objects.
         """
-        return self.available_vms(vms=vms)
+        return self.available_vms(vms=self.target_vms)
 
 
     def parse_messier_config(self, config_filepath=".messier"):
