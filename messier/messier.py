@@ -25,8 +25,8 @@ class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
         ServerspecHandler.__init__(self)
         self.config = self.parse_messier_config(config_filepath=config_file)
         if not vms:
-            vms = []
-        self.vms = vms
+            self.vms = []
+        
         # Convert VM names to VM objects
         self.vms = self.available_vms()
         self.provider = provider

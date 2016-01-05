@@ -98,7 +98,7 @@ if __name__ == "__main__":
     m.args = args
 
     if args['<command>'] == 'list':
-        for vm in m.available_vms():
+        for vm in m.vms:
             print(vm)
 
     elif args['<command>'] == 'create':
