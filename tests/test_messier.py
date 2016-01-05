@@ -15,6 +15,7 @@ import yaml
 import hashlib
 import subprocess
 import shlex
+import time
 
 from messier import messier
 from messier.serverspec_handler import cd
@@ -117,7 +118,6 @@ class TestMessier(unittest.TestCase):
         """
         m = messier.Messier()
         m.create_vms()
-        original_uptimes = {}
 
         def get_uptime(vm):
             """
@@ -128,18 +128,15 @@ class TestMessier(unittest.TestCase):
             cmd = shlex.split(cmd)
             return subprocess.check_output(cmd, stderr=open('/dev/null', 'w'))
 
-        for vm in m.vms:
-            uptime = get_uptime(vm)
-            original_uptimes[vm.name] = uptime
+        original_uptimes = { vm.name: get_uptime(vm) for vm in m.vms }
+        # Sleep to make sure the original boot has a higher uptime
+        time.sleep(20)
+        m.reload_vms()
+        new_uptimes = { vm.name: get_uptime(vm) for vm in m.vms }
 
-        new_uptimes = {}
-        for vm in m.vms:
-            m.v.reload(vm_name=vm.name)
-            new_uptime = get_uptime(vm)
-            new_uptimes[vm.name] = new_uptime
-
-        for k, v in original_uptimes.items():
+        for k, v in original_uptimes.iteritems():
             assert new_uptimes[k] < v
+
 
 if __name__ == '__main__':
     import sys
