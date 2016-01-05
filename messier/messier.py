@@ -27,6 +27,8 @@ class Messier(AnsibleHandler, VagrantHandler, ServerspecHandler):
         self.target_vms = vms
         self.provider = provider
         self.playbook = playbook
+        # Inspect available VMs so exceptions are thrown early.
+        self.vms
 
 
     @property
