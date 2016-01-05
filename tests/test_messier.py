@@ -43,6 +43,7 @@ class TestMessier(unittest.TestCase):
             m = messier.Messier()
         self.assertEqual(m.config, {})
 
+
     def test_empty_config_raises_exception(self):
         """
         Create a Messier object with no config and ensure config is empty.
@@ -51,6 +52,7 @@ class TestMessier(unittest.TestCase):
         with self.assertRaises(VagrantfileNotFound):
             with cd(temp_dir):
                 m = messier.Messier()
+
 
     def test_custom_config(self, content=None):
         """
@@ -66,16 +68,6 @@ class TestMessier(unittest.TestCase):
         for box in desired_boxes:
             assert box in m.config['vagrant_boxes']
 
-    def test_list_vms(self, content=None):
-        """
-        Ensure named VM in Vagrantfile is returned by `messier list`.
-        """
-        # Uses tests directory?
-        with cd(os.path.abspath(os.path.curdir)):
-            m = messier.Messier()
-            for vm in ("client", "server"):
-              assert vm in [vm.name for vm in m.vms]
-
 
     @unittest.skip("`init` command not yet supported")
     def test_init_creates_vagrantfile_if_none(self):
@@ -87,6 +79,7 @@ class TestMessier(unittest.TestCase):
         with cd(temp_dir):
             m = messier.Messier()
         assert os.path.exists(os.path.join(temp_dir, 'Vagrantfile'))
+
 
     @unittest.skip("`init` command not yet supported")
     def test_init_does_not_clobber_vagrantfile(self):
@@ -103,6 +96,21 @@ class TestMessier(unittest.TestCase):
         new_checksum = hashlib.sha256(vagrantfile).hexdigest()
         assert new_checksum == original_checksum
 
+
+class TestVagrantHandler(unittest.TestCase):
+    """Tests the Vagrant handler subcommands for Messier object."""
+
+    def test_list_vms(self, content=None):
+        """
+        Ensure named VM in Vagrantfile is returned by `messier list`.
+        """
+        # Uses tests directory?
+        with cd(os.path.abspath(os.path.curdir)):
+            m = messier.Messier()
+            for vm in ("client", "server"):
+              assert vm in [vm.name for vm in m.vms]
+
+
     def test_create_vms(self):
         """
         Create VMs from existing Vagrantfile and ensure they are running.
@@ -111,6 +119,7 @@ class TestMessier(unittest.TestCase):
         m.create_vms()
         for vm in m.vms:
             assert vm.state == "running"
+
 
     def test_destroy_vms(self):
         """
