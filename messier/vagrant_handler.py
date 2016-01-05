@@ -18,7 +18,7 @@ class VagrantHandler(object):
         self.v = vagrant.Vagrant()
 
 
-    def available_vms(self):
+    def available_vms(self, vms=None):
         """
         List all VMs regardless of state, filtering if requested via the <vms>
         parameter provider by the CLI.
@@ -31,11 +31,10 @@ class VagrantHandler(object):
             # documentation for specific return codes has proven difficult.
             raise VagrantfileNotFound
 
-        if self.vms:
-            wanted_vms = [vm for vm in possible_vms if vm.name in self.vms]
+        if vms:
+            wanted_vms = [vm for vm in possible_vms if vm.name in vms]
             possible_vms = wanted_vms
-        else:
-            self.vms = possible_vms
+
         return possible_vms
 
 
