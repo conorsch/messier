@@ -38,11 +38,21 @@ In order to simplify setup, Test Kitchen makes the concession that testing VMs a
 polluted with additional software in order to accommodate test running. Serverspec
 has an SSH transport built into it, and Test Kitchen ignores that functionality completely.
 
+Name
+----
+
+`Messier`_ was a comet hunter, and didn't much care for galaxies or nebula. He
+only kept track of non-comet objects so he wouldn't bother inspecting them
+further. Similarly, the ``messier`` tool, particularly the ``messier ci``
+subcommand, considers working configurations forgettable, and flag only
+failures for follow-up work. The name is also brutally honest, in that the
+heavy Vagrant dependency will make your configuration projects messier. :wink:
+
 
 TODO
 ----
 
-* Add `init` command for bootstrapping Messier config
+* Add ``init`` command for bootstrapping Messier config
 
 
 License
@@ -55,4 +65,4 @@ GPLv3 (would like to use MIT, but if `import ansible` appears, then it must be G
 .. _Ansible pull mode: http://docs.ansible.com/ansible/playbooks_intro.html?#ansible-pull
 .. _reboots always triggering failure: https://github.com/ahelal/kitchen-ansiblepush/issues/10
 .. _ansible_spec: https://github.com/volanja/ansible_spec
-
+.. _Messier: https://en.wikipedia.org/wiki/Charles_Messier
