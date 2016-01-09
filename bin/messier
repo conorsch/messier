@@ -63,7 +63,7 @@ def test_run(m, args):
 
         m.provision_vms()
 
-        if args['--reboot']:
+        if args['--reboot'] or "reboot_vms" in m.config:
             info("Rebooting VMs...")
             m.reload_vms()
 
