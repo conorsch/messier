@@ -47,10 +47,17 @@ class VagrantHandler(object):
         # Renable stdout to watch provisioner output
         self.v.out_cm = vagrant.stdout_cm
 
+        # Allow custom workflow of multiple provisioners
+        if 'provision_flow' in self.config:
+            for provision_step in self.config['provision_flow']:
+                for vm in provision_step['vms']:
+                    provisioner = provision_step.get('provision_with', None)
+                    self.v.provision(vm_name=vm, provision_with=provisioner)
+
         # In multi-machine environments, the Ansible provisioner for Vagrant
         # expects only a single target, allowing Ansible to handle sorting out
         # the correct host list via limit=all.
-        if 'provision_target' in self.config:
+        elif 'provision_target' in self.config:
             self.v.provision(vm_name=self.config['provision_target'])
         else:
             for vm in self.vms:
