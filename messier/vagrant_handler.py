@@ -50,8 +50,10 @@ class VagrantHandler(object):
         # Allow custom workflow of multiple provisioners
         if 'provision_flow' in self.config:
             for provision_step in self.config['provision_flow']:
+                # python-vagrant expects a list for the provisioner arg,
+                # and will silently skip provisioning if passed a string.
+                provisioner = [provision_step.get('provision_with', None)]
                 for vm in provision_step['vms']:
-                    provisioner = provision_step.get('provision_with', None)
                     self.v.provision(vm_name=vm, provision_with=provisioner)
 
         # In multi-machine environments, the Ansible provisioner for Vagrant
