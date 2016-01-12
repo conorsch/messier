@@ -26,8 +26,10 @@ Options:
 
 """
 import sys
+import time
 from docopt import docopt
 from blessings import Terminal
+
 
 import messier
 
@@ -56,7 +58,9 @@ def test_run(m, args):
         """
         if not args['--keep']:
             info("Destroying VMs...")
-            m.destroy_vms()
+            if args['--provider'] == "digital_ocean":
+                # Wait a bit for the droplets to be destroyed.
+                time.sleep(10)
 
         info("Creating VMs...")
         m.create_vms()

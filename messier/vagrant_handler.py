@@ -94,7 +94,10 @@ class VagrantHandler(object):
                 # doesn't clean up after itself:
                 # https://github.com/smdahlen/vagrant-digitalocean/issues/194
                 if vm.provider == "digital_ocean":
-                    self.v.destroy(vm_name=vm.name)
+                    try:
+                        self.v.destroy(vm_name=vm.name)
+                    except CalledProcessError:
+                        pass
 
 
     def create_vms(self):

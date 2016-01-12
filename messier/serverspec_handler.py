@@ -6,6 +6,7 @@ import os
 from .exceptions import ServerspecGemfileNotFound, AnsiblePlaybookNotFound
 
 
+
 # Magnificent StackOverflow answer: http://stackoverflow.com/a/24176022/140800
 @contextmanager
 def cd(newdir):
