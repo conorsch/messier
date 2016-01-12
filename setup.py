@@ -23,7 +23,7 @@ test_requirements = [
 
 setup(
     name='messier',
-    version='0.1.0',
+    version='0.1.1',
     description="Test Ansible roles with Vagrant, similar to Test Kitchen",
     long_description=readme + '\n\n' + history,
     author="Conor Schaefer",
