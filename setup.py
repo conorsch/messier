@@ -1,18 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-
 try:
     from setuptools import setup
 except ImportError:
     from distutils.core import setup
 
+# Brittle hack to keep requirements declaration DRY.
 from pip.req import parse_requirements
 from pip.download import PipSession
 install_reqs = parse_requirements('requirements.txt', session=PipSession())
 
 reqs = [str(ir.req) for ir in install_reqs]
-print(reqs)
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -46,13 +44,12 @@ setup(
                  'messier'},
     include_package_data=True,
     install_requires=requirements,
-    license="ISCL",
+    license="GPLv3",
     zip_safe=False,
     keywords='messier',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: ISC License (ISCL)',
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.6',
