@@ -5,13 +5,6 @@ try:
 except ImportError:
     from distutils.core import setup
 
-# Brittle hack to keep requirements declaration DRY.
-from pip.req import parse_requirements
-from pip.download import PipSession
-install_reqs = parse_requirements('requirements.txt', session=PipSession())
-
-reqs = [str(ir.req) for ir in install_reqs]
-
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
@@ -19,12 +12,11 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-
-    # TODO: put package requirements here
+    'blessings',
+    'docopt',
+    'python-vagrant',
+    'pyyaml',
 ]
-# Use pip-parsed output
-requirements = reqs
-
 test_requirements = [
     # TODO: put package test requirements here
 ]
